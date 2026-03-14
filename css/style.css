@@ -1,0 +1,100 @@
+.home-screen, .login-screen {
+    background: url(../images/dlsu-facade.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.black-fill {
+    background: rgba(0,0,0, 0.7);
+    min-height: 100vh;
+}
+
+#navHome {
+    background: rgba(255,255,255, 0.5) !important;
+}
+
+.welcome-text {
+    min-height: 100vh;
+}
+
+.welcome-text img {
+    width: 300px;
+}
+
+.welcome-text h4 {
+    color: #eee;
+    font-size: 51px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.welcome-text p{
+    color: #222;
+    background: rgba(255,255,255, 0.5);
+    padding: 5px;
+    border-radius: 4px;
+}
+
+#about{
+    min-height: 80vh;
+}
+
+#about .card-1{
+    max-width: 600px;
+    width: 90%;
+    background: rgba(255,255,255, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#about .card-1 h5{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 32px;
+}
+
+#contact{
+    min-height: 100vh;
+}
+
+#contact h3{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+#contact form {
+    max-width: 600px;
+    width: 90%;
+    background: rgba(255,255,255, 0.5);
+    padding: 20px;
+}
+
+#contact form h3{
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+textarea {
+    resize: none;
+}
+
+.login {
+    max-width: 500px;
+    width: 90%;
+    background: rgba(255,255,255, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.login h3{
+    text-align: center;
+    font-size: 50px;
+}
