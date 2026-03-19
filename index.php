@@ -1,93 +1,76 @@
+<?php
+
+    session_start();
+
+    $errors = [
+        'login' => $_SESSION['login_error'] ?? null,
+        'register' => $_SESSION['register_error'] ?? null
+    ];
+    $activeForm = $_SESSION['active_form'] ?? 'login';
+
+    session_unset();
+
+    function showError($error) {
+        return !empty($error) ? "<div class='error'>$error</div>" : '';
+    }
+
+    function isActiveForm($formName, $activeForm) {
+        return $formName === $activeForm ? 'active' : '';
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <title>Login - Classroom Availability System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - GreenDoorz</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="images/DLSU_Logo_Clear_Background.png">
+    <link rel="stylesheet" href="css/login.css">
 </head>
-<body class="home-screen">
-    <div class="black-fill"><br /><br />
+
+<body class="login">
         <div class="container">
-            <nav class="navbar navbar-expand-lg bg-light" id="navHome">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
-                        <img src="images/DLSU_Logo_Clear_Background.png" width=50>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="#about">About</a>
-                            </li>
-                            <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav me-right mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="login.php">Login</a>
-                            </li>
-                        </ul>
+            <div class="form-box <?= isActiveForm('login', $activeForm); ?>" id="login-form">
+                <form action="login_register.php" method="post">
+                    <div class="brand">
+                        <img src="images/DLSU_Logo_Clear_Background.png" alt="Logo">
+                        <h3>GreenDoorz</h3>
                     </div>
-                </div>
-            </nav>
-            <section class="welcome-text d-flex justify-content-center align-items-center flex-column">
-                <img src="images/DLSU_Logo_Clear_Background.png">
-                <h4>Welcome to GreenDoorz</h4>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Soluta esse dicta omnis. Optio labore saepe sapiente amet, quas excepturi adipisci, dolorem quibusdam nobis, quod et deserunt est minima. Magnam, excepturi.</p>
-            </section>
-            <section id="about"
-                     class="welcome-text d-flex justify-content-center 
-                     align-items-center">
-                <div class="card mb-3 card-1">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="images/DLSU_Logo_Clear_Background.png" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">About Us</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">De La Salle University</small></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section id="contact"
-                     class="welcome-text d-flex justify-content-center 
-                     align-items-center">
-                <form>
-                    <h3> Contact </h3>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <textarea class="form-control" rows="4"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <h2>Login</h2>
+                    <?= showError($errors['login']); ?>
+                    <input type="text" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit" name="login">Login</button>
+                    <p>Don't have an account? <a href="#" onclick="showForm('register-form')">Register</a></p>
                 </form>
-            </section>
-            <div class="text-center text-light">
+            </div>
+
+            <div class="form-box <?= isActiveForm('register', $activeForm); ?>" id="register-form">
+                <form action="login_register.php" method="post">
+                    <div class="brand">
+                        <img src="images/DLSU_Logo_Clear_Background.png" alt="Logo">
+                        <h3>GreenDoorz</h3>
+                    </div>
+                    <h2>Register</h2>
+                    <?= showError($errors['register']); ?> 
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <select name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button type="submit" name="register">Register</button>
+                    <p>Already have an account? <a href="#" onclick="showForm('login-form')">Login</a></p>
+                </form>
+            </div>
+
+            <div class="footer">
                 Copyright &copy; 2026 De La Salle University. All rights reserved.
             </div>
         </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
