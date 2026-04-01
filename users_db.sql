@@ -26,61 +26,107 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `users`
 --
-
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('user','admin') NOT NULL
+  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` ENUM('user','admin') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table structure for table 'rooms'
---  
-
-CREATE TABLE rooms (
-  room_id INT PRIMARY KEY AUTO_INCREMENT,
-  building_name ENUM('GK', 'AG') NOT NULL,
-  floor_level INT NOT NULL,
-  room_number VARCHAR(10) NOT NULL,
-  UNIQUE KEY room_code (building_name, floor_level, room_number)
-);
+-- Table structure for buildings and rooms (infrastructure)`rooms`
+--
+CREATE TABLE `rooms` (
+  `room_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `building_name` VARCHAR(100),
+  `room_name` VARCHAR(50),
+  `floor_level` INT,
+  `capacity` INT,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  PRIMARY KEY (`room_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table structure for table 'reservations'
+-- Table structure for master schedules (admins only)
 --
-
-CREATE TABLE reservations (
-  res_id INT PRIMARY KEY AUTO_INCREMENT,
-  room_id INT NOT NULL,
-  student_id VARCHAR(20) NOT NULL, -- DLSU ID Number
-  res_date DATE NOT NULL,
-  time_start TIME NOT NULL,
-  time_end TIME NOT NULL,
-  status ENUM('Pending', 'Reserved', 'Rejected') DEFAULT 'Pending',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE
-);
+CREATE TABLE `master_schedules` (
+  `schedule_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `room_id` INT(11) NOT NULL,
+  `admin_id` INT(10) UNSIGNED NOT NULL, -- Tracks which admin uploaded this
+  `activity_name` VARCHAR(100),
+  `day_of_name` ENUM('Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'),
+  `start_time` TIME,
+  `end_time` TIME,
+  PRIMARY KEY (`schedule_id`),
+  -- Foreign Key Constraints
+  CONSTRAINT `fk_room_schedule` 
+    FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) 
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    
+  CONSTRAINT `fk_admin_user` 
+    FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`) 
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Table for student registrations (students to rooms)
+--
+CREATE TABLE `registrations` (
+  `registration_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,  -- Links to your users table
+  `room_id` INT NOT NULL,
+  `booking_date` DATE NOT NULL,
+  `day_of_name` ENUM('Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'),
+  `start_time` TIME NOT NULL,
+  `end_time` TIME NOT NULL,
+  `booking_status` ENUM('Confirmed', 'Pending', 'Checked-In', 'Cancelled') DEFAULT 'Pending',
+  -- Foreign Key Constraints
+  CONSTRAINT `fk_reg_user` 
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) 
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    
+  -- References room id
+  CONSTRAINT `fk_reg_room` 
+    FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) 
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Table structure for 'terms' o manage schedule resets across different academic periods
+-- 
+CREATE TABLE `terms` (
+  `term_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `academic_year` VARCHAR(20) NOT NULL, --sample: 2025-2026
+  `term_number` ENUM('1', '2', '3') NOT NULL,
+  `start_date` DATE NOT NULL,
+  `end_date` DATE NOT NULL,
+  `status` ENUM('Active', 'Archived', 'Upcoming') DEFAULT 'Upcoming',
+  PRIMARY KEY (`term_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Table for system logs / audit logs (monitoring systems)
+--
+CREATE TABLE `system_logs` (
+  `log_id` INT PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INT UNSIGNED NOT NULL,
+  `user_action` VARCHAR(255),
+  `ip_address` VARCHAR(45),
+  `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- Dumping data for table `users`
 --
-
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (3, 'admin', 'admin@gmail.com', '$2y$10$1Jdp0pA0lUM7QUp4nEbvEOI/VcYmDO/EzHI9iD6LXtqpmWkc2l7NK', 'admin');
 
--- 
+
 -- Dumping data for table 'rooms'
 --
-
-INSERT INTO 'rooms' ('building_name', 'floor_level', 'room_number') VALUES
--- Gokongwei (GK)
-('GK', 1, '01'), ('GK', 1, '02'), ('GK', 1, '03'),
-('GK', 2, '01'), ('GK', 2, '02'), ('GK', 2, '03'), 
--- Andrew Gonzales (AG)
-('AG', 1, '01'), ('AG', 1, '02'), ('AG', 1, '03'), 
-('AG', 2, '01'), ('AG', 2, '02'), ('AG', 2, '03');
 
 --
 -- Indexes for dumped tables
@@ -90,7 +136,6 @@ INSERT INTO 'rooms' ('building_name', 'floor_level', 'room_number') VALUES
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email_unique` (`email`);
 
 --
