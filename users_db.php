@@ -1,6 +1,6 @@
 <?php
 
-$host = "localhost:3308"; // feel free to change the port number depending on xampp for editing
+$host = "localhost:3306"; // feel free to change the port number depending on xampp for editing
 $username = "root";
 $password = "";
 $dbName = "users_db";

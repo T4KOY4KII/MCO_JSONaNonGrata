@@ -52,17 +52,29 @@ select {
     width: 100%;
     padding: 12px;
     margin: 10px 0 20px 0;
-    border: none;
+    border: 2px solid rgb(120, 120, 120);
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 6px;
     color: #333;
+}
+
+input:hover {
+    border-color: #cfcfcf;
+    background-color: #fff;
+}
+
+input:focus {
+    border: #00703c;
+    background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(0, 112, 60, 0.2);
+    transform: translateY(-1px);
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background: #007BFF;
-    color: #fff;
+    background: #00703c;
+    color: #ffffff;
     border: none;
     font-size: 16px;
     border-radius: 5px;
@@ -71,7 +83,7 @@ button {
 }
 
 button:hover {
-    background: #0056b3;
+    background: #089754;;
 }
 
 p {
@@ -81,7 +93,7 @@ p {
 }
 
 p a {
-    color: #007BFF;
+    color: #00703c;
     text-decoration: none;
 }
 

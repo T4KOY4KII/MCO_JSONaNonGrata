@@ -36,11 +36,51 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Table structure for table 'rooms'
+--  
+
+CREATE TABLE rooms (
+  room_id INT PRIMARY KEY AUTO_INCREMENT,
+  building_name ENUM('GK', 'AG') NOT NULL,
+  floor_level INT NOT NULL,
+  room_number VARCHAR(10) NOT NULL,
+  UNIQUE KEY room_code (building_name, floor_level, room_number)
+);
+
+--
+-- Table structure for table 'reservations'
+--
+
+CREATE TABLE reservations (
+  res_id INT PRIMARY KEY AUTO_INCREMENT,
+  room_id INT NOT NULL,
+  student_id VARCHAR(20) NOT NULL, -- DLSU ID Number
+  res_date DATE NOT NULL,
+  time_start TIME NOT NULL,
+  time_end TIME NOT NULL,
+  status ENUM('Pending', 'Reserved', 'Rejected') DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (room_id) REFERENCES rooms(room_id) ON DELETE CASCADE
+);
+
+--
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (3, 'admin', 'admin@gmail.com', '$2y$10$1Jdp0pA0lUM7QUp4nEbvEOI/VcYmDO/EzHI9iD6LXtqpmWkc2l7NK', 'admin');
+
+-- 
+-- Dumping data for table 'rooms'
+--
+
+INSERT INTO 'rooms' ('building_name', 'floor_level', 'room_number') VALUES
+-- Gokongwei (GK)
+('GK', 1, '01'), ('GK', 1, '02'), ('GK', 1, '03'),
+('GK', 2, '01'), ('GK', 2, '02'), ('GK', 2, '03'), 
+-- Andrew Gonzales (AG)
+('AG', 1, '01'), ('AG', 1, '02'), ('AG', 1, '03'), 
+('AG', 2, '01'), ('AG', 2, '02'), ('AG', 2, '03');
 
 --
 -- Indexes for dumped tables
