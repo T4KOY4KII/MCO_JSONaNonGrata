@@ -1,16 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1:3308
--- Generation Time: Mar 19, 2026 at 01:45 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -37,7 +27,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table structure for buildings and rooms (infrastructure)`rooms`
+-- Table structure for `rooms`
 --
 CREATE TABLE `rooms` (
   `room_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -50,18 +40,17 @@ CREATE TABLE `rooms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table structure for master schedules (admins only)
+-- Table structure for `master_schedules`
 --
 CREATE TABLE `master_schedules` (
   `schedule_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `room_id` INT(11) NOT NULL,
-  `admin_id` INT(10) UNSIGNED NOT NULL, -- Tracks which admin uploaded this
+  `admin_id` INT(10) UNSIGNED NOT NULL,
   `activity_name` VARCHAR(100),
   `day_of_name` ENUM('Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'),
   `start_time` TIME,
   `end_time` TIME,
   PRIMARY KEY (`schedule_id`),
-  -- Foreign Key Constraints
   CONSTRAINT `fk_room_schedule` 
     FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) 
     ON DELETE CASCADE ON UPDATE CASCADE,
@@ -72,34 +61,31 @@ CREATE TABLE `master_schedules` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table for student registrations (students to rooms)
+-- Table structure for `registrations`
 --
 CREATE TABLE `registrations` (
   `registration_id` INT PRIMARY KEY AUTO_INCREMENT,
-  `user_id` INT UNSIGNED NOT NULL,  -- Links to your users table
+  `user_id` INT UNSIGNED NOT NULL,
   `room_id` INT NOT NULL,
   `booking_date` DATE NOT NULL,
   `day_of_name` ENUM('Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'),
   `start_time` TIME NOT NULL,
   `end_time` TIME NOT NULL,
   `booking_status` ENUM('Confirmed', 'Pending', 'Checked-In', 'Cancelled') DEFAULT 'Pending',
-  -- Foreign Key Constraints
   CONSTRAINT `fk_reg_user` 
     FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) 
     ON DELETE CASCADE ON UPDATE CASCADE,
-    
-  -- References room id
   CONSTRAINT `fk_reg_room` 
     FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`) 
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table structure for 'terms' o manage schedule resets across different academic periods
+-- Table structure for `terms`
 -- 
 CREATE TABLE `terms` (
   `term_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `academic_year` VARCHAR(20) NOT NULL, --sample: 2025-2026
+  `academic_year` VARCHAR(20) NOT NULL,
   `term_number` ENUM('1', '2', '3') NOT NULL,
   `start_date` DATE NOT NULL,
   `end_date` DATE NOT NULL,
@@ -108,7 +94,7 @@ CREATE TABLE `terms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table for system logs / audit logs (monitoring systems)
+-- Table structure for `system_logs`
 --
 CREATE TABLE `system_logs` (
   `log_id` INT PRIMARY KEY AUTO_INCREMENT,
@@ -119,34 +105,12 @@ CREATE TABLE `system_logs` (
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
 -- Dumping data for table `users`
 --
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (3, 'admin', 'admin@gmail.com', '$2y$10$1Jdp0pA0lUM7QUp4nEbvEOI/VcYmDO/EzHI9iD6LXtqpmWkc2l7NK', 'admin');
 
-
--- Dumping data for table 'rooms'
---
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD UNIQUE KEY `email_unique` (`email`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

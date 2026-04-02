@@ -2,13 +2,23 @@
 
     session_start();
 
+    if (isset($_SESSION['name'])) {
+        if ($_SESSION['role'] === 'admin') {
+        header("Location: admin_page.php");
+        } else {
+            header("Location: user_page.php");
+        }
+        exit();
+    }
     $errors = [
         'login' => $_SESSION['login_error'] ?? null,
         'register' => $_SESSION['register_error'] ?? null
     ];
     $activeForm = $_SESSION['active_form'] ?? 'login';
 
-    session_unset();
+    unset($_SESSION['login_error']);
+    unset($_SESSION['register_error']);
+    unset($_SESSION['active_form']);
 
     function showError($error) {
         return !empty($error) ? "<div class='error'>$error</div>" : '';

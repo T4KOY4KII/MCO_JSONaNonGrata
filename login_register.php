@@ -1,5 +1,4 @@
 <?php
-
     session_start();
     require_once "users_db.php";
 
@@ -13,8 +12,9 @@
         if ($checkEmail->num_rows > 0) {
             $_SESSION['register_error'] = "Email already exists.";
             $_SESSION['active_form'] = 'register';
+            header("Location: index.php");
         } else {
-            $conn->query("INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$password', '$role')");
+            $insert = $conn->query("INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$password', '$role')");
         }
 
         header("Location: index.php");
@@ -31,6 +31,8 @@
             if (password_verify($password, $user['password'])) {
                 $_SESSION['name'] = $user['name'];
                 $_SESSION['email'] = $user['email'];
+                $_SESSION['id'] = $user['id'];
+                $_SESSION['role'] = $user['role'];
 
                 if ($user['role'] === 'admin') {
                     header("Location: admin_page.php");

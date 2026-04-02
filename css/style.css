@@ -82,6 +82,7 @@
     font-weight: 200;
     font-style: normal;
 }
+
 textarea {
     resize: none;
 }
@@ -97,4 +98,26 @@ textarea {
 .login h3{
     text-align: center;
     font-size: 50px;
+}
+
+.card:hover{
+    background-color: #089754;
+}
+
+.dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border: none;
+    backdrop-filter: blur(5px);
+}
+
+.dropdown-item {
+    background-color: transparent !important;
+    color: #444 !important;
+    transition: color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: transparent !important;
+    color: #000 !important;
+    text-decoration: underline; 
 }
