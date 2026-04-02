@@ -33,8 +33,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="about_us.php">About Us</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item dropdown">
@@ -84,46 +83,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <section id="about" class="welcome-text mb-5">
-                <div class="card bg-light border-0 shadow-sm">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-md-4 p-4 text-center">
-                            <img src="images/DLSU_Logo_Clear_Background.png" class="img-fluid" style="max-width: 150px;">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">About GreenDoorz</h5>
-                                <p class="card-text">GreenDoorz is a collaborative study space manager for DLSU students. Our goal is to help you find quiet places to work by tracking official class schedules and real-time student occupancy.</p>
-                                <p class="card-text"><small class="text-muted">Developed by JSONa Non Grata</small></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contact" class="welcome-text bg-white p-4 rounded shadow-sm mb-5">
-                <form>
-                    <h3 class="mb-4">Contact Support</h3>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">DLSU Email address</label>
-                            <input type="email" class="form-control" placeholder="juan_delacruz@dlsu.edu.ph">
-                            <div class="form-text text-muted">We'll never share your email with anyone else.</div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" placeholder="Juan Dela Cruz">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Issue / Inquiry</label>
-                        <textarea class="form-control" rows="4" placeholder="Report an unscheduled event or technical issue..."></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success">Send Message</button>
-                </form>
-            </section>
+            </div><br><br>
 
             <div class="text-center text-light pb-4">
                 Copyright &copy; 2026 De La Salle University. All rights reserved.
