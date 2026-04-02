@@ -34,9 +34,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="user_dashboard.php">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="about_us.php">About</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item dropdown">
@@ -55,6 +54,7 @@
                 </div>
             </nav>
 
+            <!-- All rights reserved text-->
             <div class="text-center text-light pb-4">
                 Copyright &copy; 2026 De La Salle University. All rights reserved.
             </div>

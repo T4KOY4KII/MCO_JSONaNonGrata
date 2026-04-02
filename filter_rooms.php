@@ -1,26 +1,25 @@
 <?php
     session_start();
-    require_once "users_db.php"; 
+    require_once "users_db.php";
 
     if (!isset($_SESSION['name'])) {
         header("Location: index.php");
         exit();
     }
 
-    $user_id = $_SESSION['id'] ?? 0; 
+    $building = isset($_GET['building']) ? $_GET['building'] : '';
+    $floor = isset($_GET['floor']) ? $_GET['floor'] : '';
 
-    if ($user_id === 0) {
-        header("Location: index.php?error=session_expired");
-        exit();
+    $sql = "SELECT * FROM rooms WHERE 1=1";
+
+    if ($building != '') {
+        $sql .= " AND building = '" . $conn->real_escape_string($building) . "'";
+    }
+    if ($floor != '') {
+        $sql .= " AND floor = '" . $conn->real_escape_string($floor) . "'";
     }
 
-    $query = "SELECT r.registration_id, rm.room_name, rm.building_name, r.start_time, r.end_time, r.booking_status 
-            FROM registrations r 
-            JOIN rooms rm ON r.room_id = rm.room_id 
-            WHERE r.user_id = '$user_id' 
-            ORDER BY r.booking_date DESC, r.start_time DESC";
-
-    $result = $conn->query($query);
+    $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +27,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Reservations - GreenDoorz</title>
+    <title>New Reservation - GreenDoorz</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -66,6 +65,41 @@
                     </div>
                 </div>
             </nav>
+
+            <!-- Filter Form -->
+            <section id="filter-form" class="welcome-text bg-white px-4 py-3 rounded shadow-sm mt-3 mb-2">
+                <form>
+                    <h3 class="mb-3">New Reservation</h3>
+
+                    <div class="row mb-4 align-items-center">
+                        <label class="col-sm-2 text-end fw-bold">Building</label>
+                        <div class="col-sm-8">
+                            <select class="form-select text-muted required">
+                                <option selected>Select a Building</option>
+                                <option value="GK">Gokongwei (GK)</option>
+                                <option value="AG">Andrew Gonzalez (AG)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 align-items-center">
+                        <label class="col-sm-2 text-end fw-bold">Floor</label>
+                        <div class="col-sm-8">
+                            <select class="form-select text-muted required">
+                                <option selected>Select the floor</option>
+                                <option value="1">Floor 1</option>
+                                <option value="2">Floor 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-2"></div> <div class="col-sm-8">
+                            <button type="submit" class="btn btn-success px-4 py-2">Show Availability</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
 
             <!-- All rights reserved text -->
             <div class="text-center text-light pb-4">

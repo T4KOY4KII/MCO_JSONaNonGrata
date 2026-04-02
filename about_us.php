@@ -1,10 +1,11 @@
 <?php
-session_start();
-if (!isset($_SESSION['name'])) {
-    header("Location: login.php");
-    exit();
-}
+    session_start();
+    if (!isset($_SESSION['name'])) {
+        header("Location: login.php");
+        exit();
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +20,7 @@ if (!isset($_SESSION['name'])) {
 <body class="home-screen">
     <div class="black-fill"><br />
         <div class="container">
+            <!-- Navigation Bar -->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-3 shadow mb-4" id="navHome">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">
@@ -30,7 +32,7 @@ if (!isset($_SESSION['name'])) {
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="user_page.php">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="user_dashboard.php">Home</a></li>
                             <li class="nav-item"><a class="nav-link active" href="#">About Us</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto">
@@ -48,6 +50,7 @@ if (!isset($_SESSION['name'])) {
                 </div>
             </nav>
 
+            <!-- About Us -->
             <section id="about" class="mb-0">
                 <div class="card bg-light border-0 shadow-sm">
                     <div class="row g-0 align-items-center">
@@ -68,6 +71,7 @@ if (!isset($_SESSION['name'])) {
                 </div>
             </section>
 
+            <!-- Contact Support -->
             <section id="contact" class="welcome-text bg-white p-4 rounded shadow-sm mt-3 mb-5">
                 <form>
                     <h3 class="mb-4">Contact Support</h3>
@@ -90,6 +94,7 @@ if (!isset($_SESSION['name'])) {
                 </form>
             </section>
 
+            <!-- All rights reserved text -->
             <div class="text-center text-light pb-4">
                 Copyright &copy; 2026 De La Salle University. All rights reserved.
             </div>
