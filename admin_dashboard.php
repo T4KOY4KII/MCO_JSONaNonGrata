@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['name'])) {
+    if (!isset($_SESSION['name']) || $_SESSION['role'] !== 'admin') {
         header("Location: index.php");
         exit();
     }
@@ -16,32 +16,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - GreenDoorz</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="images/DLSU_Logo_Clear_Background.png">
 </head>
 <body class="home-screen">
-    <div class="black-fill"><br />
+    <div class="black-fill"><br /><br />
         <div class="container">
             <!-- Navigation Bar -->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded-3 shadow mb-4" id="navHome">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">
-                        <img src="images/DLSU_Logo_Clear_Background.png" width="40" class="me-2">
+                        <img src="images/DLSU_Logo_Clear_Background.png" width=40 class="me-2">
                         GreenDoorz
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link <?php echo $page == 'home' ? 'active' : ''; ?>" href="user_dashboard.php?page=home">
+                                <a class="nav-link <?php echo $page == 'home' ? 'active' : ''; ?>" href="admin_dashboard.php?page=home">
                                     Home
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link <?php echo $page == 'about' ? 'active' : ''; ?>" href="user_dashboard.php?page=about">
+                                <a class="nav-link <?php echo $page == 'about' ? 'active' : ''; ?>" href="admin_dashboard.php?page=about">
                                     About Us
                                 </a>
                             </li>
@@ -60,46 +59,35 @@
                     </div>
                 </div>
             </nav>
-
+            
             <div class="content-wrapper min-vh-75">
                 <!-- Home Page -->
                 <?php if ($page == 'home'): ?>
                     <div class="row g-4 mb-5">
-                        <!-- To Check Room Availability Page -->
+                        <!-- To Manage Per Room Schedules -->
                         <div class="col-md-4">
                             <div class="card h-100 border-0 shadow-sm position-relative action-card bg-success text-white">
-                                <a href="view_availability.php" class="stretched-link text-decoration-none"></a>
+                                <a href="manage_schedules.php" class="stretched-link text-decoration-none"></a>
                                 <div class="card-body text-center p-5">
                                     <i class="fa fa-map-location-dot fa-4x mb-4"></i>
-                                    <h2 class="card-title fw-bold">Check Rooms Availabity</h2>
-                                    <p class="card-text opacity-75">Check which rooms in GK and AG are currently available.</p>
+                                    <h2 class="card-title fw-bold">Manage Classroom Schedules</h2>
+                                    <p class="card-text opacity-75">Upload and maintain schedules per classrooms.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- To Reserve a Seat Page -->
+                        <!-- To Manage Buildings & Rooms-->
                         <div class="col-md-4">
                             <div class="card h-100 border-0 shadow-sm position-relative action-card bg-success text-white">
-                                <a href="filter_rooms.php" class="stretched-link text-decoration-none"></a>
+                                <a href="manage_buildings.php" class="stretched-link text-decoration-none"></a>
                                 <div class="card-body text-center p-5">
-                                    <i class="fa fa-chair fa-4x mb-4"></i>
-                                    <h2 class="card-title fw-bold">Reserve a Seat</h2>
-                                    <p class="card-text opacity-75">Find an available room and reserve a seat for your study session.</p>
+                                    <i class="fa fa-map-location-dot fa-4x mb-4"></i>
+                                    <h2 class="card-title fw-bold">Manage Building and Rooms</h2>
+                                    <p class="card-text opacity-75">Update Buildings and Rooms Information.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- To Check Own Seat Bookings -->
-                        <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm position-relative action-card bg-success text-white">
-                                <a href="my_reservations.php" class="stretched-link text-decoration-none"></a>
-                                <div class="card-body text-center p-5">
-                                    <i class="fa fa-calendar-check fa-4x mb-4"></i>
-                                    <h2 class="card-title fw-bold">My Bookings</h2>
-                                    <p class="card-text opacity-75">View your active reservations and history of saved seats.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div><br><br>
                 <?php elseif ($page == 'about'): ?>
                     <!-- About Us -->
@@ -122,34 +110,11 @@
                             </div>
                         </div>
                     </section>
-
-                    <!-- Contact Support -->
-                    <section id="contact" class="welcome-text bg-white p-4 rounded shadow-sm mt-3 mb-5">
-                        <form>
-                            <h3 class="mb-4">Contact Support</h3>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">DLSU Email address</label>
-                                    <input type="email" class="form-control" placeholder="juan_delacruz@dlsu.edu.ph">
-                                    <div class="form-text text-muted">We'll never share your email with anyone else.</div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" placeholder="Juan Dela Cruz">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Issue / Inquiry</label>
-                                <textarea class="form-control" rows="4" placeholder="Report an unscheduled event or technical issue..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-success">Send Message</button>
-                        </form>
-                    </section>
                 <?php endif; ?>
             </div>
 
             <!-- All rights reserved text -->
-            <div class="text-center text-light pb-4">
+            <div class="text-center text-light">
                 Copyright &copy; 2026 De La Salle University. All rights reserved.
             </div>
         </div>
